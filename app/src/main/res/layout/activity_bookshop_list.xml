@@ -5,39 +5,35 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.MainActivity">
+    tools:context=".main.BookshopListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp">
+        android:padding="24dp">
 
         <TextView
-            android:id="@+id/mainTitle"
+            android:id="@+id/bookshopsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="Bookshops"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/viewBookshopsButton"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bookshopsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="View Bookshops"
-            app:backgroundTint="@color/brand_green" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp" />
 
         <Button
-            android:id="@+id/addBookshopButton"
+            android:id="@+id/returnButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Add Bookshop"
+            android:text="Back to menu"
             app:backgroundTint="@color/brand_green" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
