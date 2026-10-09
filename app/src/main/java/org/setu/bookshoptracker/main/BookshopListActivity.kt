@@ -34,6 +34,10 @@ class BookshopListActivity : AppCompatActivity() {
         adapter = BookshopAdapter(
             bookshops = AppData.bookshops.findAll(),
 
+            onManageBooks = { bookshop ->
+                manageBooks(bookshop)
+            },
+
             onEdit = { bookshop ->
                 editBookshop(bookshop)
             },
@@ -68,6 +72,12 @@ class BookshopListActivity : AppCompatActivity() {
                 AppData.bookshops.findAll()
             )
         }
+    }
+
+    private fun manageBooks(bookshop: Bookshop) {
+        val intent = Intent(this, BookTrackerActivity::class.java)
+        intent.putExtra("bookshopId", bookshop.id)
+        startActivity(intent)
     }
 
     private fun editBookshop(bookshop: Bookshop) {

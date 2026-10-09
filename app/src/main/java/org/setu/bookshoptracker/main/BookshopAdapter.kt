@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 
 class BookshopAdapter(
     private var bookshops: List<Bookshop>,
+    private val onManageBooks: (Bookshop) -> Unit,
     private val onEdit: (Bookshop) -> Unit,
     private val onDelete: (Bookshop) -> Unit
 ) : RecyclerView.Adapter<BookshopAdapter.BookshopViewHolder>() {
@@ -37,6 +39,12 @@ class BookshopAdapter(
 
         val ratingText: TextView =
             itemView.findViewById(R.id.ratingText)
+
+        val booksCountText: TextView =
+            itemView.findViewById(R.id.booksCountText)
+
+        val booksButton: Button =
+            itemView.findViewById(R.id.booksButton)
 
         val editButton: Button =
             itemView.findViewById(R.id.editButton)
@@ -87,6 +95,15 @@ class BookshopAdapter(
 
         holder.ratingText.text =
             "Rating: ${bookshop.rating}"
+
+        val shopBooks = AppData.books.findAllByBookshop(bookshop.id)
+        val readCount = shopBooks.count { it.isRead }
+        holder.booksCountText.text =
+            "Books bought: ${shopBooks.size} (${readCount} read)"
+
+        holder.booksButton.setOnClickListener {
+            onManageBooks(bookshop)
+        }
 
         holder.editButton.setOnClickListener {
             onEdit(bookshop)
