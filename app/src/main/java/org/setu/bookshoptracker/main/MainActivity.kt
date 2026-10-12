@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, AddEditActivity::class.java))
                     true
                 }
+                R.id.nav_edit -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
