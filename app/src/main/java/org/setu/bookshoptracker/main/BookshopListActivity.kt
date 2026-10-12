@@ -25,7 +25,7 @@ class BookshopListActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
 
@@ -59,6 +59,10 @@ class BookshopListActivity : AppCompatActivity() {
                 R.id.nav_bookshops -> true
                 R.id.nav_add -> {
                     startActivity(Intent(this, AddEditActivity::class.java))
+                    true
+                }
+                R.id.nav_edit -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
                 else -> false
