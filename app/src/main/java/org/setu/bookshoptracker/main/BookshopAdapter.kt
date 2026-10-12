@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
+import timber.log.Timber
 
 class BookshopAdapter(
     private var bookshops: List<Bookshop>,
-    private val onManageBooks: (Bookshop) -> Unit,
-    private val onEdit: (Bookshop) -> Unit,
-    private val onDelete: (Bookshop) -> Unit
+    private val listener: BookshopListener,
+    private val onManageBooks: (Bookshop) -> Unit
 ) : RecyclerView.Adapter<BookshopAdapter.BookshopViewHolder>() {
 
     class BookshopViewHolder(itemView: View) :
@@ -45,12 +45,6 @@ class BookshopAdapter(
 
         val booksButton: Button =
             itemView.findViewById(R.id.booksButton)
-
-        val editButton: Button =
-            itemView.findViewById(R.id.editButton)
-
-        val deleteButton: Button =
-            itemView.findViewById(R.id.deleteButton)
     }
 
     override fun onCreateViewHolder(
@@ -101,16 +95,18 @@ class BookshopAdapter(
         holder.booksCountText.text =
             "Books bought: ${shopBooks.size} (${readCount} read)"
 
+        holder.itemView.setOnClickListener {
+            Timber.d("Bookshop clicked: id=${bookshop.id}, name=${bookshop.name}")
+            listener.onBookshopClick(bookshop)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            Timber.d("Bookshop long clicked: id=${bookshop.id}, name=${bookshop.name}")
+            listener.onBookshopLongClick(bookshop)
+        }
+
         holder.booksButton.setOnClickListener {
             onManageBooks(bookshop)
-        }
-
-        holder.editButton.setOnClickListener {
-            onEdit(bookshop)
-        }
-
-        holder.deleteButton.setOnClickListener {
-            onDelete(bookshop)
         }
     }
 

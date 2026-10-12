@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
+import timber.log.Timber
 
 class AddEditActivity : AppCompatActivity() {
 
@@ -55,9 +56,11 @@ class AddEditActivity : AppCompatActivity() {
         val formTitle = findViewById<TextView>(R.id.formTitle)
         if (editingId != null) {
             formTitle.text = "Edit Bookshop"
+            Timber.i("AddEditActivity opened in Edit mode for shop id=$editingId")
             loadExistingBookshop(editingId!!)
         } else {
             formTitle.text = "Add Bookshop"
+            Timber.i("AddEditActivity opened in Add mode")
         }
 
         saveButton.setOnClickListener {
@@ -97,6 +100,7 @@ class AddEditActivity : AppCompatActivity() {
         val bookshop = AppData.bookshops.findOne(id)
 
         if (bookshop == null) {
+            Timber.w("Bookshop with id=$id not found for editing")
             Toast.makeText(this, "Bookshop not found", Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -136,6 +140,7 @@ class AddEditActivity : AppCompatActivity() {
                 rating = rating
             )
             AppData.bookshops.create(bookshop)
+            Timber.i("Bookshop created: name=$name")
             Toast.makeText(this, "Bookshop created", Toast.LENGTH_SHORT).show()
         } else {
             val bookshop = Bookshop(
@@ -149,6 +154,7 @@ class AddEditActivity : AppCompatActivity() {
                 rating = rating
             )
             AppData.bookshops.update(bookshop)
+            Timber.i("Bookshop updated: id=$editingId, name=$name")
             Toast.makeText(this, "Bookshop updated", Toast.LENGTH_SHORT).show()
         }
 
