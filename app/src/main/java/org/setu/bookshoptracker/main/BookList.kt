@@ -40,4 +40,20 @@ class BookList {
     fun findOne(id: Long): Book? {
         return books.find { it.id == id }
     }
+
+    fun search(
+        bookshopId: Long,
+        query: String = "",
+        isReadFilter: Boolean? = null
+    ): List<Book> {
+        return books.filter { book ->
+            val matchesShop = (book.bookshopId == bookshopId)
+            val matchesQuery = query.isEmpty() ||
+                book.title.contains(query, ignoreCase = true) ||
+                book.author.contains(query, ignoreCase = true)
+            val matchesRead = isReadFilter == null || book.isRead == isReadFilter
+
+            matchesShop && matchesQuery && matchesRead
+        }
+    }
 }

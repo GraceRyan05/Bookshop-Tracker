@@ -53,4 +53,24 @@ class BookshopList {
     fun findOne(id: Long): Bookshop? {
         return bookshops.find { b -> b.id == id }
     }
+
+    fun search(
+        query: String = "",
+        sellsNewBooks: Boolean = false,
+        sellsUsedBooks: Boolean = false,
+        rating: Int = 0
+    ): List<Bookshop> {
+        return bookshops.filter { shop ->
+            val matchesQuery = query.isEmpty() ||
+                shop.name.contains(query, ignoreCase = true) ||
+                shop.address.contains(query, ignoreCase = true) ||
+                shop.description.contains(query, ignoreCase = true)
+
+            val matchesNew = !sellsNewBooks || shop.sellsNewBooks
+            val matchesUsed = !sellsUsedBooks || shop.sellsUsedBooks
+            val matchesRating = rating == 0 || shop.rating >= rating
+
+            matchesQuery && matchesNew && matchesUsed && matchesRating
+        }
+    }
 }
