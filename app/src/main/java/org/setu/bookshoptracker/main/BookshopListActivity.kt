@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 
@@ -28,38 +29,40 @@ class BookshopListActivity : AppCompatActivity() {
             insets
         }
 
-        recyclerView =
-            findViewById(R.id.bookshopsRecyclerView)
+        recyclerView = findViewById(R.id.bookshopsRecyclerView)
 
         adapter = BookshopAdapter(
             bookshops = AppData.bookshops.findAll(),
-
-            onManageBooks = { bookshop ->
-                manageBooks(bookshop)
-            },
-
-            onEdit = { bookshop ->
-                editBookshop(bookshop)
-            },
-
-            onDelete = { bookshop ->
-                deleteBookshop(bookshop)
-            }
+            onManageBooks = { bookshop -> manageBooks(bookshop) },
+            onEdit = { bookshop -> editBookshop(bookshop) },
+            onDelete = { bookshop -> deleteBookshop(bookshop) }
         )
 
-        recyclerView.layoutManager =
-            LinearLayoutManager(this)
-
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val returnButton =
-            findViewById<Button>(R.id.returnButton)
-
+        val returnButton = findViewById<Button>(R.id.returnButton)
         returnButton.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
-            startActivity(
-                Intent(this, MainActivity::class.java)
-            )
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.selectedItemId = R.id.nav_bookshops
+
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_bookshops -> true
+                R.id.nav_edit -> {
+                    startActivity(Intent(this, AddEditActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -67,10 +70,7 @@ class BookshopListActivity : AppCompatActivity() {
         super.onResume()
 
         if (::adapter.isInitialized) {
-
-            adapter.updateBookshops(
-                AppData.bookshops.findAll()
-            )
+            adapter.updateBookshops(AppData.bookshops.findAll())
         }
     }
 
@@ -81,21 +81,13 @@ class BookshopListActivity : AppCompatActivity() {
     }
 
     private fun editBookshop(bookshop: Bookshop) {
-
-        val intent =
-            Intent(this, AddEditActivity::class.java)
-
+        val intent = Intent(this, AddEditActivity::class.java)
         intent.putExtra("id", bookshop.id)
-
         startActivity(intent)
     }
 
     private fun deleteBookshop(bookshop: Bookshop) {
-
         AppData.bookshops.delete(bookshop.id)
-
-        adapter.updateBookshops(
-            AppData.bookshops.findAll()
-        )
+        adapter.updateBookshops(AppData.bookshops.findAll())
     }
 }
