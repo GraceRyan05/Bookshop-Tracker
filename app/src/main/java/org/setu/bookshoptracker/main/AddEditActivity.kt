@@ -1,13 +1,19 @@
 package org.setu.bookshoptracker.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
+import org.setu.bookshoptracker.R
 
 class AddEditActivity : AppCompatActivity() {
 
@@ -24,94 +30,71 @@ class AddEditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_add_edit)
 
-        createUserInterface()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
 
-        editingId = intent.getLongExtra("id", -1L)
+        nameInput = findViewById(R.id.nameInput)
+        addressInput = findViewById(R.id.addressInput)
+        descriptionInput = findViewById(R.id.descriptionInput)
+        newBooksCheckbox = findViewById(R.id.newBooksCheckbox)
+        usedBooksCheckbox = findViewById(R.id.usedBooksCheckbox)
+        openingHoursInput = findViewById(R.id.openingHoursInput)
+        ratingInput = findViewById(R.id.ratingInput)
 
-        if (editingId != -1L) {
+        val saveButton = findViewById<Button>(R.id.saveButton)
+        val cancelButton = findViewById<Button>(R.id.cancelButton)
+
+        editingId = intent.getLongExtra("id", -1L).takeIf { it != -1L }
+
+        val formTitle = findViewById<TextView>(R.id.formTitle)
+        if (editingId != null) {
+            formTitle.text = "Edit Bookshop"
             loadExistingBookshop(editingId!!)
-        }
-    }
-
-    private fun createUserInterface() {
-
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(32, 100, 32, 32)
+        } else {
+            formTitle.text = "Add Bookshop"
         }
 
-        nameInput = EditText(this).apply {
-            hint = "Name"
+        saveButton.setOnClickListener {
+            saveBookshop()
         }
 
-        addressInput = EditText(this).apply {
-            hint = "Address"
+        cancelButton.setOnClickListener {
+            finish()
         }
 
-        descriptionInput = EditText(this).apply {
-            hint = "Description"
-        }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.selectedItemId = R.id.nav_add
 
-        newBooksCheckbox = CheckBox(this).apply {
-            text = "Sells new books"
-        }
-
-        usedBooksCheckbox = CheckBox(this).apply {
-            text = "Sells used books"
-        }
-
-        openingHoursInput = EditText(this).apply {
-            hint = "Opening hours"
-        }
-
-        ratingInput = EditText(this).apply {
-            hint = "Rating"
-        }
-
-        val saveButton = Button(this).apply {
-            text = "Save"
-
-            setOnClickListener {
-                saveBookshop()
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_bookshops -> {
+                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_add -> true
+                else -> false
             }
         }
-
-        val cancelButton = Button(this).apply {
-            text = "Cancel"
-
-            setOnClickListener {
-                finish()
-            }
-        }
-
-        root.addView(nameInput)
-        root.addView(addressInput)
-        root.addView(descriptionInput)
-        root.addView(newBooksCheckbox)
-        root.addView(usedBooksCheckbox)
-        root.addView(openingHoursInput)
-        root.addView(ratingInput)
-        root.addView(saveButton)
-        root.addView(cancelButton)
-
-        setContentView(root)
     }
 
     private fun loadExistingBookshop(id: Long) {
-
         val bookshop = AppData.bookshops.findOne(id)
 
         if (bookshop == null) {
-
-            Toast.makeText(
-                this,
-                "Bookshop not found",
-                Toast.LENGTH_SHORT
-            ).show()
-
+            Toast.makeText(this, "Bookshop not found", Toast.LENGTH_SHORT).show()
             finish()
-
             return
         }
 
@@ -127,16 +110,18 @@ class AddEditActivity : AppCompatActivity() {
     }
 
     private fun saveBookshop() {
-
-        val name = nameInput.text.toString()
-        val address = addressInput.text.toString()
-        val description = descriptionInput.text.toString()
-        val openingHours = openingHoursInput.text.toString()
-
+        val name = nameInput.text.toString().trim()
+        val address = addressInput.text.toString().trim()
+        val description = descriptionInput.text.toString().trim()
+        val openingHours = openingHoursInput.text.toString().trim()
         val rating = ratingInput.text.toString().toDoubleOrNull() ?: 0.0
 
-        if (editingId == null || editingId == -1L) {
+        if (name.isEmpty()) {
+            nameInput.error = "Name is required"
+            return
+        }
 
+        if (editingId == null) {
             val bookshop = Bookshop(
                 name = name,
                 address = address,
@@ -146,17 +131,9 @@ class AddEditActivity : AppCompatActivity() {
                 openingHours = openingHours,
                 rating = rating
             )
-
             AppData.bookshops.create(bookshop)
-
-            Toast.makeText(
-                this,
-                "Bookshop created",
-                Toast.LENGTH_SHORT
-            ).show()
-
+            Toast.makeText(this, "Bookshop created", Toast.LENGTH_SHORT).show()
         } else {
-
             val bookshop = Bookshop(
                 id = editingId!!,
                 name = name,
@@ -167,14 +144,8 @@ class AddEditActivity : AppCompatActivity() {
                 openingHours = openingHours,
                 rating = rating
             )
-
             AppData.bookshops.update(bookshop)
-
-            Toast.makeText(
-                this,
-                "Bookshop updated",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, "Bookshop updated", Toast.LENGTH_SHORT).show()
         }
 
         finish()

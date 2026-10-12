@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, BookshopListActivity::class.java))
                     true
                 }
-                R.id.nav_edit -> {
+                R.id.nav_add -> {
                     startActivity(Intent(this, AddEditActivity::class.java))
                     true
                 }
