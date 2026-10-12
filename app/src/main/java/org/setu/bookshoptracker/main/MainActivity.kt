@@ -9,10 +9,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.R
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Timber.plant(Timber.DebugTree())
+        Timber.i("Bookshop Tracker MainActivity started")
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
@@ -26,10 +31,12 @@ class MainActivity : AppCompatActivity() {
         val addBookshopButton = findViewById<Button>(R.id.addBookshopButton)
 
         viewBookshopsButton.setOnClickListener {
+            Timber.d("View Bookshops button clicked")
             startActivity(Intent(this, BookshopListActivity::class.java))
         }
 
         addBookshopButton.setOnClickListener {
+            Timber.d("Add Bookshop button clicked")
             startActivity(Intent(this, AddEditActivity::class.java))
         }
 

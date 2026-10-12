@@ -1,6 +1,7 @@
 package org.setu.bookshoptracker.main
 
 import java.util.concurrent.atomic.AtomicLong
+import timber.log.Timber
 
 class BookshopList {
 
@@ -14,6 +15,7 @@ class BookshopList {
     fun create(bookshop: Bookshop) {
         bookshop.id = lastId.incrementAndGet()
         bookshops.add(bookshop)
+        Timber.i("Bookshop created in store: id=${bookshop.id}, name=${bookshop.name}")
     }
 
     fun update(bookshop: Bookshop): Boolean {
@@ -27,8 +29,10 @@ class BookshopList {
             foundBookshop.sellsUsedBooks = bookshop.sellsUsedBooks
             foundBookshop.openingHours = bookshop.openingHours
             foundBookshop.rating = bookshop.rating
+            Timber.i("Bookshop updated in store: id=${bookshop.id}, name=${bookshop.name}")
             true
         } else {
+            Timber.w("Failed to update bookshop: id=${bookshop.id} not found")
             false
         }
     }
@@ -38,8 +42,10 @@ class BookshopList {
 
         return if (foundBookshop != null) {
             bookshops.remove(foundBookshop)
+            Timber.i("Bookshop deleted from store: id=$id, name=${foundBookshop.name}")
             true
         } else {
+            Timber.w("Failed to delete bookshop: id=$id not found")
             false
         }
     }
