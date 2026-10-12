@@ -1,9 +1,11 @@
 package org.setu.bookshoptracker.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 
@@ -20,6 +23,7 @@ class BookTrackerActivity : AppCompatActivity() {
     private var bookshopId: Long = -1L
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BookAdapter
+    private lateinit var searchBookView: SearchView
 
     private lateinit var titleInput: EditText
     private lateinit var authorInput: EditText
@@ -32,7 +36,7 @@ class BookTrackerActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
 
@@ -55,6 +59,19 @@ class BookTrackerActivity : AppCompatActivity() {
             addBook()
         }
 
+        searchBookView = findViewById(R.id.searchBookView)
+        searchBookView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                performSearch(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                performSearch(newText.orEmpty())
+                return true
+            }
+        })
+
         val backButton = findViewById<Button>(R.id.backButton)
         backButton.setOnClickListener {
             finish()
@@ -75,6 +92,33 @@ class BookTrackerActivity : AppCompatActivity() {
         )
 
         recyclerView.adapter = adapter
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.selectedItemId = R.id.nav_bookshops
+
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_bookshops -> {
+                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_add -> {
+                    startActivity(Intent(this, AddEditActivity::class.java))
+                    true
+                }
+                R.id.nav_edit -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun addBook() {
@@ -104,6 +148,12 @@ class BookTrackerActivity : AppCompatActivity() {
     }
 
     private fun refreshList() {
-        adapter.updateBooks(AppData.books.findAllByBookshop(bookshopId))
+        val query = if (::searchBookView.isInitialized) searchBookView.query.toString() else ""
+        performSearch(query)
+    }
+
+    private fun performSearch(query: String) {
+        val filteredBooks = AppData.books.search(bookshopId = bookshopId, query = query)
+        adapter.updateBooks(filteredBooks)
     }
 }

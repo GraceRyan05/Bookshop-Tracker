@@ -17,10 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search bookshops..." />
+
         <TextView
             android:id="@+id/bookshopsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Bookshops"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -39,6 +47,7 @@
             android:layout_height="wrap_content"
             android:text="Back to menu"
             app:backgroundTint="@color/brand_green" />
+
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -49,7 +58,6 @@
         app:itemTextColor="@color/brand_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu" />
 

@@ -3,6 +3,7 @@ package org.setu.bookshoptracker.main
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ class BookshopListActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BookshopAdapter
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,19 @@ class BookshopListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        searchView = findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                performSearch(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                performSearch(newText.orEmpty())
+                return true
+            }
+        })
+
         val returnButton = findViewById<Button>(R.id.returnButton)
         returnButton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
@@ -88,8 +103,14 @@ class BookshopListActivity : AppCompatActivity() {
         super.onResume()
 
         if (::adapter.isInitialized) {
-            adapter.updateBookshops(AppData.bookshops.findAll())
+            val query = if (::searchView.isInitialized) searchView.query.toString() else ""
+            performSearch(query)
         }
+    }
+
+    private fun performSearch(query: String) {
+        val filteredShops = AppData.bookshops.search(query = query)
+        adapter.updateBookshops(filteredShops)
     }
 
     private fun manageBooks(bookshop: Bookshop) {
@@ -112,7 +133,8 @@ class BookshopListActivity : AppCompatActivity() {
             .setPositiveButton("Delete") { _, _ ->
                 Timber.d("User confirmed deletion of bookshop id=${bookshop.id}, name=${bookshop.name}")
                 AppData.bookshops.delete(bookshop.id)
-                adapter.updateBookshops(AppData.bookshops.findAll())
+                val query = searchView.query.toString()
+                performSearch(query)
             }
             .setNegativeButton("Cancel") { _, _ ->
                 Timber.d("User cancelled deletion of bookshop id=${bookshop.id}")
