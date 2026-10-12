@@ -57,7 +57,7 @@ class BookshopListActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_bookshops -> true
-                R.id.nav_edit -> {
+                R.id.nav_add -> {
                     startActivity(Intent(this, AddEditActivity::class.java))
                     true
                 }
