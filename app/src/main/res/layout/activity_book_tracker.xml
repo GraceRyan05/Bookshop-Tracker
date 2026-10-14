@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,47 +21,73 @@
             android:id="@+id/shopNameTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/brand_green"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Add Book Bought Here"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeColor="#E3E3E3"
+            app:strokeWidth="1dp">
 
-        <EditText
-            android:id="@+id/bookTitleInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Book Title" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <EditText
-            android:id="@+id/bookAuthorInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Author" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Book Bought Here"
+                    android:textColor="@color/brand_green"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
-        <CheckBox
-            android:id="@+id/bookReadInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Already Read" />
+                <EditText
+                    android:id="@+id/bookTitleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Book Title" />
 
-        <Button
-            android:id="@+id/addBookButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Add Book"
-            app:backgroundTint="@color/brand_green" />
+                <EditText
+                    android:id="@+id/bookAuthorInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:hint="Author" />
+
+                <CheckBox
+                    android:id="@+id/bookReadInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Already Read" />
+
+                <Button
+                    android:id="@+id/addBookButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Add Book"
+                    app:backgroundTint="@color/brand_green"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <SearchView
             android:id="@+id/searchBookView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/search_bg"
             android:iconifiedByDefault="false"
             android:queryHint="Search books..." />
 
@@ -78,15 +104,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:clipToPadding="false"
+            android:paddingVertical="4dp" />
 
         <Button
             android:id="@+id/backButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="Back to Bookshops"
-            app:backgroundTint="@color/brand_green" />
+            app:backgroundTint="@color/brand_green"
+            app:cornerRadius="12dp" />
 
     </LinearLayout>
 

@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="24dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +22,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/search_bg"
             android:iconifiedByDefault="false"
             android:queryHint="Search bookshops..." />
 
@@ -28,8 +30,9 @@
             android:id="@+id/bookshopsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:text="Bookshops"
+            android:textColor="@color/brand_green"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -38,15 +41,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp" />
+            android:clipToPadding="false"
+            android:paddingVertical="8dp" />
 
         <Button
             android:id="@+id/returnButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Back to menu"
-            app:backgroundTint="@color/brand_green" />
+            app:backgroundTint="@color/brand_green"
+            app:cornerRadius="12dp" />
 
     </LinearLayout>
 
