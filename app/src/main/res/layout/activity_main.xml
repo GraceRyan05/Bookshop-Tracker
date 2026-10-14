@@ -12,36 +12,76 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/mainTitle"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Bookshop Tracker"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp"
+            app:strokeColor="#E3E3E3"
+            app:strokeWidth="1dp">
 
-        <Button
-            android:id="@+id/viewBookshopsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="View Bookshops"
-            app:backgroundTint="@color/brand_green" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="28dp">
 
-        <Button
-            android:id="@+id/addBookshopButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Add Bookshop"
-            app:backgroundTint="@color/brand_green" />
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:contentDescription="App Logo"
+                    android:src="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                    app:tint="@color/brand_green" />
+
+                <TextView
+                    android:id="@+id/mainTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="Bookshop Tracker"
+                    android:textColor="@color/brand_green"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="Discover, track & log your bookshops"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/viewBookshopsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="View Bookshops"
+                    app:backgroundTint="@color/brand_green"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/addBookshopButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Add Bookshop"
+                    app:backgroundTint="@color/brand_green"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
