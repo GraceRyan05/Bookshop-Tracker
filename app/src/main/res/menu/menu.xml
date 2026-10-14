@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
         android:title="Home" />
     <item
         android:id="@+id/nav_bookshops"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/collections_bookmark_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
         android:title="Bookshops" />
     <item
         android:id="@+id/nav_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/library_add_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
         android:title="Add Shop" />
     <item
         android:id="@+id/nav_edit"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/settings_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
         android:title="Settings" />
 </menu>
