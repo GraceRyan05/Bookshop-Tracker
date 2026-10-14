@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 
 class BookAdapter(
@@ -32,7 +33,9 @@ class BookAdapter(
         val book = books[position]
 
         holder.bookTitleText.text = book.title
-        holder.bookAuthorText.text = if (book.author.isNotEmpty()) "Author: ${book.author}" else ""
+        val shop = AppData.bookshops.findOne(book.bookshopId)
+        val shopInfo = if (shop != null) " | Shop: ${shop.name}" else ""
+        holder.bookAuthorText.text = if (book.author.isNotEmpty()) "Author: ${book.author}$shopInfo" else shopInfo.trimStart(' ', '|')
 
         holder.readCheckBox.setOnCheckedChangeListener(null)
         holder.readCheckBox.isChecked = book.isRead

@@ -28,11 +28,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewBookshopsButton = findViewById<Button>(R.id.viewBookshopsButton)
+        val viewAllBooksButton = findViewById<Button>(R.id.viewAllBooksButton)
         val addBookshopButton = findViewById<Button>(R.id.addBookshopButton)
 
         viewBookshopsButton.setOnClickListener {
             Timber.d("View Bookshops button clicked")
             startActivity(Intent(this, BookshopListActivity::class.java))
+        }
+
+        viewAllBooksButton.setOnClickListener {
+            Timber.d("View All Books button clicked")
+            startActivity(Intent(this, AllBooksActivity::class.java))
         }
 
         addBookshopButton.setOnClickListener {
@@ -52,6 +58,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_add -> {
                     startActivity(Intent(this, AddEditActivity::class.java))
+                    true
+                }
+                R.id.nav_books -> {
+                    startActivity(Intent(this, AllBooksActivity::class.java))
                     true
                 }
                 R.id.nav_edit -> {

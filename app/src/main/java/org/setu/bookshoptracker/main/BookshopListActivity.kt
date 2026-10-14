@@ -90,6 +90,10 @@ class BookshopListActivity : AppCompatActivity() {
                     startActivity(Intent(this, AddEditActivity::class.java))
                     true
                 }
+                R.id.nav_books -> {
+                    startActivity(Intent(this, AllBooksActivity::class.java))
+                    true
+                }
                 R.id.nav_edit -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
