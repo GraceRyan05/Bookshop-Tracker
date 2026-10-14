@@ -65,6 +65,11 @@ class SettingsActivity : AppCompatActivity() {
                     finish()
                     true
                 }
+                R.id.nav_books -> {
+                    startActivity(Intent(this, AllBooksActivity::class.java))
+                    finish()
+                    true
+                }
                 R.id.nav_edit -> true
                 else -> false
             }

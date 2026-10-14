@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
@@ -12,6 +13,10 @@
         android:id="@+id/nav_add"
         android:icon="@drawable/library_add_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
         android:title="Add Shop" />
+    <item
+        android:id="@+id/nav_books"
+        android:icon="@drawable/book_2_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+        android:title="Books Tracked" />
     <item
         android:id="@+id/nav_edit"
         android:icon="@drawable/settings_24dp_e3e3e3_fill0_wght400_grad0_opsz24"

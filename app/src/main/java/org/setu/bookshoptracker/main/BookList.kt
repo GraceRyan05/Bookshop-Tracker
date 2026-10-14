@@ -2,6 +2,8 @@ package org.setu.bookshoptracker.main
 
 import java.util.concurrent.atomic.AtomicLong
 
+enum class ReadFilter { ALL, READ_ONLY, UNREAD_ONLY }
+
 class BookList {
     private val books = ArrayList<Book>()
     private val lastId = AtomicLong(0L)
@@ -54,6 +56,24 @@ class BookList {
             val matchesRead = isReadFilter == null || book.isRead == isReadFilter
 
             matchesShop && matchesQuery && matchesRead
+        }
+    }
+
+    fun findAllAndFilter(
+        filter: ReadFilter = ReadFilter.ALL,
+        query: String = ""
+    ): List<Book> {
+        return books.filter { book ->
+            val matchesRead = when (filter) {
+                ReadFilter.ALL -> true
+                ReadFilter.READ_ONLY -> book.isRead
+                ReadFilter.UNREAD_ONLY -> !book.isRead
+            }
+            val matchesQuery = query.isEmpty() ||
+                book.title.contains(query, ignoreCase = true) ||
+                book.author.contains(query, ignoreCase = true)
+
+            matchesRead && matchesQuery
         }
     }
 }
