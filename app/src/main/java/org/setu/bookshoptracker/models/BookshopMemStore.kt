@@ -2,6 +2,8 @@ package org.setu.bookshoptracker.models
 
 import java.util.concurrent.atomic.AtomicLong
 
+import org.setu.bookshoptracker.main.Bookshop
+
 class BookshopMemStore : BookshopStore {
 
     private val bookshops = ArrayList<BookshopModel>()
@@ -12,11 +14,14 @@ class BookshopMemStore : BookshopStore {
     }
 
     override fun create(bookshop: BookshopModel) {
+        bookshop.validate()
         bookshop.id = lastId.incrementAndGet()
         bookshops.add(bookshop)
     }
 
     override fun update(bookshop: BookshopModel): Boolean {
+        bookshop.validate()
+
         val foundBookshop = findOne(bookshop.id)
 
         return if (foundBookshop != null) {

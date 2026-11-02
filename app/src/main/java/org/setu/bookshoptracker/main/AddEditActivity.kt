@@ -1,13 +1,16 @@
 package org.setu.bookshoptracker.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,7 +30,28 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var newBooksCheckbox: CheckBox
     private lateinit var usedBooksCheckbox: CheckBox
 
+    private lateinit var bookshopImageView: ImageView
+    private lateinit var selectImageButton: Button
+
+    private var selectedImageUri: Uri? = null
     private var editingId: Long? = null
+
+    private val imagePicker =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            if (uri != null) {
+                try {
+                    contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                } catch (_: SecurityException) {
+                }
+
+                selectedImageUri = uri
+                bookshopImageView.setImageURI(uri)
+                Timber.i("Image selected: $uri")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +71,13 @@ class AddEditActivity : AppCompatActivity() {
         usedBooksCheckbox = findViewById(R.id.usedBooksCheckbox)
         openingHoursInput = findViewById(R.id.openingHoursInput)
         ratingInput = findViewById(R.id.ratingInput)
+
+        bookshopImageView = findViewById(R.id.bookshopImageView)
+        selectImageButton = findViewById(R.id.selectImageButton)
+
+        selectImageButton.setOnClickListener {
+            imagePicker.launch(arrayOf("image/*"))
+        }
 
         val saveButton = findViewById<Button>(R.id.saveButton)
         val cancelButton = findViewById<Button>(R.id.cancelButton)
@@ -119,6 +150,13 @@ class AddEditActivity : AppCompatActivity() {
 
         openingHoursInput.setText(bookshop.openingHours)
         ratingInput.setText(bookshop.rating.toString())
+
+        selectedImageUri = bookshop.imageUri?.let { Uri.parse(it) }
+        if (selectedImageUri != null) {
+            bookshopImageView.setImageURI(selectedImageUri)
+        } else {
+            bookshopImageView.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
     }
 
     private fun saveBookshop() {
@@ -128,40 +166,41 @@ class AddEditActivity : AppCompatActivity() {
         val openingHours = openingHoursInput.text.toString().trim()
         val rating = ratingInput.text.toString().toDoubleOrNull() ?: 0.0
 
-        if (name.isEmpty()) {
-            nameInput.error = "Name is required"
-            return
-        }
+        try {
+            if (editingId == null) {
+                val bookshop = Bookshop(
+                    name = name,
+                    address = address,
+                    description = description,
+                    sellsNewBooks = newBooksCheckbox.isChecked,
+                    sellsUsedBooks = usedBooksCheckbox.isChecked,
+                    openingHours = openingHours,
+                    rating = rating,
+                    imageUri = selectedImageUri?.toString()
+                )
+                AppData.bookshops.create(bookshop)
+                Timber.i("Bookshop created: name=$name")
+                Toast.makeText(this, "Bookshop created", Toast.LENGTH_SHORT).show()
+            } else {
+                val bookshop = Bookshop(
+                    id = editingId!!,
+                    name = name,
+                    address = address,
+                    description = description,
+                    sellsNewBooks = newBooksCheckbox.isChecked,
+                    sellsUsedBooks = usedBooksCheckbox.isChecked,
+                    openingHours = openingHours,
+                    rating = rating,
+                    imageUri = selectedImageUri?.toString()
+                )
+                AppData.bookshops.update(bookshop)
+                Timber.i("Bookshop updated: id=$editingId, name=$name")
+                Toast.makeText(this, "Bookshop updated", Toast.LENGTH_SHORT).show()
+            }
 
-        if (editingId == null) {
-            val bookshop = Bookshop(
-                name = name,
-                address = address,
-                description = description,
-                sellsNewBooks = newBooksCheckbox.isChecked,
-                sellsUsedBooks = usedBooksCheckbox.isChecked,
-                openingHours = openingHours,
-                rating = rating
-            )
-            AppData.bookshops.create(bookshop)
-            Timber.i("Bookshop created: name=$name")
-            Toast.makeText(this, "Bookshop created", Toast.LENGTH_SHORT).show()
-        } else {
-            val bookshop = Bookshop(
-                id = editingId!!,
-                name = name,
-                address = address,
-                description = description,
-                sellsNewBooks = newBooksCheckbox.isChecked,
-                sellsUsedBooks = usedBooksCheckbox.isChecked,
-                openingHours = openingHours,
-                rating = rating
-            )
-            AppData.bookshops.update(bookshop)
-            Timber.i("Bookshop updated: id=$editingId, name=$name")
-            Toast.makeText(this, "Bookshop updated", Toast.LENGTH_SHORT).show()
+            finish()
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(this, e.message ?: "Please check entered values", Toast.LENGTH_LONG).show()
         }
-
-        finish()
     }
 }

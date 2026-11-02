@@ -8,4 +8,10 @@ data class BookshopModel(
     var sellsNewBooks: Boolean = true,
     var sellsSecondHandBooks: Boolean = false,
     var openingHours: String = ""
-)
+) {
+    fun validate() {
+        require(name.isNotBlank()) {
+            "Bookshop name must not be empty."
+        }
+    }
+}
