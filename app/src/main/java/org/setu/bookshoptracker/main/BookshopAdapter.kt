@@ -1,9 +1,11 @@
 package org.setu.bookshoptracker.main
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.setu.bookshoptracker.AppData
@@ -18,6 +20,9 @@ class BookshopAdapter(
 
     class BookshopViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
+        val shopImage: ImageView =
+            itemView.findViewById(R.id.shopImage)
 
         val titleText: TextView =
             itemView.findViewById(R.id.titleText)
@@ -68,6 +73,17 @@ class BookshopAdapter(
     ) {
 
         val bookshop = bookshops[position]
+
+        val imageUriString = bookshop.imageUri
+        if (imageUriString != null) {
+            try {
+                holder.shopImage.setImageURI(Uri.parse(imageUriString))
+            } catch (_: Exception) {
+                holder.shopImage.setImageResource(android.R.drawable.ic_menu_gallery)
+            }
+        } else {
+            holder.shopImage.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
 
         holder.titleText.text =
             "${bookshop.id}: ${bookshop.name}"

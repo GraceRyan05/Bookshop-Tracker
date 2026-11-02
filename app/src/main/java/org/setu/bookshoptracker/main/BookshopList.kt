@@ -13,12 +13,15 @@ class BookshopList {
     }
 
     fun create(bookshop: Bookshop) {
+        bookshop.validate()
         bookshop.id = lastId.incrementAndGet()
         bookshops.add(bookshop)
         Timber.i("Bookshop created in store: id=${bookshop.id}, name=${bookshop.name}")
     }
 
     fun update(bookshop: Bookshop): Boolean {
+        bookshop.validate()
+
         val foundBookshop = findOne(bookshop.id)
 
         return if (foundBookshop != null) {
@@ -29,6 +32,7 @@ class BookshopList {
             foundBookshop.sellsUsedBooks = bookshop.sellsUsedBooks
             foundBookshop.openingHours = bookshop.openingHours
             foundBookshop.rating = bookshop.rating
+            foundBookshop.imageUri = bookshop.imageUri
             Timber.i("Bookshop updated in store: id=${bookshop.id}, name=${bookshop.name}")
             true
         } else {

@@ -8,5 +8,16 @@ data class Bookshop (
     var sellsNewBooks: Boolean = false,
     var sellsUsedBooks: Boolean = false,
     var openingHours: String = "",
-    var rating: Double = 0.0
-)
+    var rating: Double = 0.0,
+    var imageUri: String? = null
+) {
+    fun validate() {
+        require(name.isNotBlank()) {
+            "Bookshop name must not be empty."
+        }
+
+        require(address.isNotBlank()) {
+            "Bookshop address must not be empty."
+        }
+    }
+}
