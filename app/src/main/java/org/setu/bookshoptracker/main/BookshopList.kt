@@ -33,6 +33,8 @@ class BookshopList {
             foundBookshop.openingHours = bookshop.openingHours
             foundBookshop.rating = bookshop.rating
             foundBookshop.imageUri = bookshop.imageUri
+            foundBookshop.lat = bookshop.lat
+            foundBookshop.lng = bookshop.lng
             Timber.i("Bookshop updated in store: id=${bookshop.id}, name=${bookshop.name}")
             true
         } else {

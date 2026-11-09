@@ -13,5 +13,9 @@ data class BookshopModel(
         require(name.isNotBlank()) {
             "Bookshop name must not be empty."
         }
+
+        require(address.isNotBlank()) {
+            "Bookshop address must not be empty."
+        }
     }
 }
