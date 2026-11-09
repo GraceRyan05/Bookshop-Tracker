@@ -34,6 +34,9 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var selectImageButton: Button
 
     private var selectedImageUri: Uri? = null
+    private var selectedLatitude: Double = 52.245954
+    private var selectedLongitude: Double = -7.139539
+
     private var editingId: Long? = null
 
     private val imagePicker =
@@ -50,6 +53,22 @@ class AddEditActivity : AppCompatActivity() {
                 selectedImageUri = uri
                 bookshopImageView.setImageURI(uri)
                 Timber.i("Image selected: $uri")
+            }
+        }
+
+    private val mapPicker =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data ?: return@registerForActivityResult
+                selectedLatitude = data.getDoubleExtra("latitude", selectedLatitude)
+                selectedLongitude = data.getDoubleExtra("longitude", selectedLongitude)
+                Toast.makeText(
+                    this,
+                    "Location updated: $selectedLatitude, $selectedLongitude",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -77,6 +96,14 @@ class AddEditActivity : AppCompatActivity() {
 
         selectImageButton.setOnClickListener {
             imagePicker.launch(arrayOf("image/*"))
+        }
+
+        findViewById<Button>(R.id.buttonLoc).setOnClickListener {
+            val intent = Intent(this, MapPickerActivity::class.java)
+            intent.putExtra("latitude", selectedLatitude)
+            intent.putExtra("longitude", selectedLongitude)
+            intent.putExtra("title", nameInput.text.toString().ifEmpty { "Bookshop Location" })
+            mapPicker.launch(intent)
         }
 
         val saveButton = findViewById<Button>(R.id.saveButton)
@@ -151,6 +178,9 @@ class AddEditActivity : AppCompatActivity() {
         openingHoursInput.setText(bookshop.openingHours)
         ratingInput.setText(bookshop.rating.toString())
 
+        selectedLatitude = bookshop.lat
+        selectedLongitude = bookshop.lng
+
         selectedImageUri = bookshop.imageUri?.let { Uri.parse(it) }
         if (selectedImageUri != null) {
             bookshopImageView.setImageURI(selectedImageUri)
@@ -176,7 +206,9 @@ class AddEditActivity : AppCompatActivity() {
                     sellsUsedBooks = usedBooksCheckbox.isChecked,
                     openingHours = openingHours,
                     rating = rating,
-                    imageUri = selectedImageUri?.toString()
+                    imageUri = selectedImageUri?.toString(),
+                    lat = selectedLatitude,
+                    lng = selectedLongitude
                 )
                 AppData.bookshops.create(bookshop)
                 Timber.i("Bookshop created: name=$name")
@@ -191,7 +223,9 @@ class AddEditActivity : AppCompatActivity() {
                     sellsUsedBooks = usedBooksCheckbox.isChecked,
                     openingHours = openingHours,
                     rating = rating,
-                    imageUri = selectedImageUri?.toString()
+                    imageUri = selectedImageUri?.toString(),
+                    lat = selectedLatitude,
+                    lng = selectedLongitude
                 )
                 AppData.bookshops.update(bookshop)
                 Timber.i("Bookshop updated: id=$editingId, name=$name")

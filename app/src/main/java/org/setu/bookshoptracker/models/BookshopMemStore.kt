@@ -2,8 +2,6 @@ package org.setu.bookshoptracker.models
 
 import java.util.concurrent.atomic.AtomicLong
 
-import org.setu.bookshoptracker.main.Bookshop
-
 class BookshopMemStore : BookshopStore {
 
     private val bookshops = ArrayList<BookshopModel>()
