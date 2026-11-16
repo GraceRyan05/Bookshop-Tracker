@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.R
 import timber.log.Timber
+import org.setu.bookshoptracker.AppData
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,5 +72,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        AppData.initialize(this)
     }
 }

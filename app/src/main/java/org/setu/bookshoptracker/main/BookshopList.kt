@@ -2,11 +2,41 @@ package org.setu.bookshoptracker.main
 
 import java.util.concurrent.atomic.AtomicLong
 import timber.log.Timber
+import java.io.File
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
-class BookshopList {
+class BookshopList(private val file: File? = null) {
 
     private val bookshops = ArrayList<Bookshop>()
     private val lastId = AtomicLong(0L)
+
+    private val gson = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
+
+    init {
+        load()
+    }
+
+    private fun load() {
+        if (file == null || !file.exists()) return
+
+        val type = object : TypeToken<List<Bookshop>>() {}.type
+
+        val loaded: ArrayList<Bookshop> = gson.fromJson(file.readText(), type) ?: arrayListOf()
+
+        bookshops.clear()
+        bookshops.addAll(loaded)
+
+        lastId.set(bookshops.maxOfOrNull { it.id } ?: 0L)
+    }
+
+    private fun save() {
+        if (file == null) return
+        file.parentFile?.mkdirs()
+        file.writeText(gson.toJson(bookshops))
+    }
 
     fun findAll(): List<Bookshop> {
         return bookshops
@@ -17,6 +47,7 @@ class BookshopList {
         bookshop.id = lastId.incrementAndGet()
         bookshops.add(bookshop)
         Timber.i("Bookshop created in store: id=${bookshop.id}, name=${bookshop.name}")
+        save()
     }
 
     fun update(bookshop: Bookshop): Boolean {
@@ -36,6 +67,7 @@ class BookshopList {
             foundBookshop.lat = bookshop.lat
             foundBookshop.lng = bookshop.lng
             Timber.i("Bookshop updated in store: id=${bookshop.id}, name=${bookshop.name}")
+            save()
             true
         } else {
             Timber.w("Failed to update bookshop: id=${bookshop.id} not found")
@@ -49,6 +81,7 @@ class BookshopList {
         return if (foundBookshop != null) {
             bookshops.remove(foundBookshop)
             Timber.i("Bookshop deleted from store: id=$id, name=${foundBookshop.name}")
+            save()
             true
         } else {
             Timber.w("Failed to delete bookshop: id=$id not found")
