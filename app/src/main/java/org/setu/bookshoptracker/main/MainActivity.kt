@@ -8,9 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.setu.bookshoptracker.AppData
+import org.setu.bookshoptracker.MapListActivity
 import org.setu.bookshoptracker.R
 import timber.log.Timber
-import org.setu.bookshoptracker.AppData
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +30,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         val viewBookshopsButton = findViewById<Button>(R.id.viewBookshopsButton)
+        val viewMapButton = findViewById<Button>(R.id.viewMapButton)
         val viewAllBooksButton = findViewById<Button>(R.id.viewAllBooksButton)
         val addBookshopButton = findViewById<Button>(R.id.addBookshopButton)
 
         viewBookshopsButton.setOnClickListener {
             Timber.d("View Bookshops button clicked")
             startActivity(Intent(this, BookshopListActivity::class.java))
+        }
+
+        viewMapButton.setOnClickListener {
+            Timber.d("View Map button clicked")
+            startActivity(Intent(this, MapListActivity::class.java))
         }
 
         viewAllBooksButton.setOnClickListener {
