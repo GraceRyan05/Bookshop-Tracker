@@ -70,6 +70,15 @@
                     app:cornerRadius="12dp" />
 
                 <Button
+                    android:id="@+id/viewMapButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="View Map"
+                    app:backgroundTint="@color/brand_green"
+                    app:cornerRadius="12dp" />
+
+                <Button
                     android:id="@+id/viewAllBooksButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
