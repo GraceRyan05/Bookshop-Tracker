@@ -1,4 +1,4 @@
-package org.setu.bookshoptracker
+package org.setu.bookshoptracker.views.maplist
 
 import android.content.Intent
 import android.net.Uri
@@ -19,15 +19,18 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
 import org.osmdroid.views.overlay.Marker
-import org.setu.bookshoptracker.main.AddEditActivity
-import org.setu.bookshoptracker.main.AllBooksActivity
+import org.setu.bookshoptracker.AppData
+import org.setu.bookshoptracker.R
 import org.setu.bookshoptracker.main.Bookshop
-import org.setu.bookshoptracker.main.BookshopListActivity
-import org.setu.bookshoptracker.main.MainActivity
-import org.setu.bookshoptracker.main.SettingsActivity
+import org.setu.bookshoptracker.views.allbooks.AllBooksView
+import org.setu.bookshoptracker.views.bookshop.BookshopView
+import org.setu.bookshoptracker.views.bookshoplist.BookshopListView
+import org.setu.bookshoptracker.views.mainmenu.MainMenuView
+import org.setu.bookshoptracker.views.settings.SettingsView
 
-class MapListActivity : AppCompatActivity() {
+class MapListView : AppCompatActivity() {
 
+    private lateinit var presenter: MapListPresenter
     private lateinit var mapView: MapView
     private lateinit var txtTitle: TextView
     private lateinit var txtDescription: TextView
@@ -42,6 +45,8 @@ class MapListActivity : AppCompatActivity() {
 
         Configuration.getInstance().userAgentValue = packageName
         setContentView(R.layout.activity_map_list)
+
+        presenter = MapListPresenter(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -61,7 +66,7 @@ class MapListActivity : AppCompatActivity() {
 
         mapEditButton.setOnClickListener {
             selectedBookshop?.let { shop ->
-                val intent = Intent(this, AddEditActivity::class.java)
+                val intent = Intent(this, BookshopView::class.java)
                 intent.putExtra("id", shop.id)
                 startActivity(intent)
             }
@@ -73,25 +78,25 @@ class MapListActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, MainMenuView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_bookshops -> {
-                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    startActivity(Intent(this, BookshopListView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_add -> {
-                    startActivity(Intent(this, AddEditActivity::class.java))
+                    startActivity(Intent(this, BookshopView::class.java))
                     true
                 }
                 R.id.nav_books -> {
-                    startActivity(Intent(this, AllBooksActivity::class.java))
+                    startActivity(Intent(this, AllBooksView::class.java))
                     true
                 }
                 R.id.nav_edit -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                    startActivity(Intent(this, SettingsView::class.java))
                     true
                 }
                 else -> false

@@ -1,4 +1,4 @@
-package org.setu.bookshoptracker.main
+package org.setu.bookshoptracker.views.mainmenu
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,19 +9,29 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
-import org.setu.bookshoptracker.MapListActivity
 import org.setu.bookshoptracker.R
+import org.setu.bookshoptracker.views.allbooks.AllBooksView
+import org.setu.bookshoptracker.views.bookshop.BookshopView
+import org.setu.bookshoptracker.views.bookshoplist.BookshopListView
+import org.setu.bookshoptracker.views.maplist.MapListView
+import org.setu.bookshoptracker.views.settings.SettingsView
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainMenuView : AppCompatActivity() {
+
+    private lateinit var presenter: MainMenuPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Timber.plant(Timber.DebugTree())
-        Timber.i("Bookshop Tracker MainActivity started")
+        Timber.i("Bookshop Tracker MainMenuView started")
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        presenter = MainMenuPresenter(this)
+        AppData.initialize(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -36,22 +46,22 @@ class MainActivity : AppCompatActivity() {
 
         viewBookshopsButton.setOnClickListener {
             Timber.d("View Bookshops button clicked")
-            startActivity(Intent(this, BookshopListActivity::class.java))
+            startActivity(Intent(this, BookshopListView::class.java))
         }
 
         viewMapButton.setOnClickListener {
             Timber.d("View Map button clicked")
-            startActivity(Intent(this, MapListActivity::class.java))
+            startActivity(Intent(this, MapListView::class.java))
         }
 
         viewAllBooksButton.setOnClickListener {
             Timber.d("View All Books button clicked")
-            startActivity(Intent(this, AllBooksActivity::class.java))
+            startActivity(Intent(this, AllBooksView::class.java))
         }
 
         addBookshopButton.setOnClickListener {
             Timber.d("Add Bookshop button clicked")
-            startActivity(Intent(this, AddEditActivity::class.java))
+            startActivity(Intent(this, BookshopView::class.java))
         }
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -61,24 +71,23 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_home -> true
                 R.id.nav_bookshops -> {
-                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    startActivity(Intent(this, BookshopListView::class.java))
                     true
                 }
                 R.id.nav_add -> {
-                    startActivity(Intent(this, AddEditActivity::class.java))
+                    startActivity(Intent(this, BookshopView::class.java))
                     true
                 }
                 R.id.nav_books -> {
-                    startActivity(Intent(this, AllBooksActivity::class.java))
+                    startActivity(Intent(this, AllBooksView::class.java))
                     true
                 }
                 R.id.nav_edit -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                    startActivity(Intent(this, SettingsView::class.java))
                     true
                 }
                 else -> false
             }
         }
-        AppData.initialize(this)
     }
 }

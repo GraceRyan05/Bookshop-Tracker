@@ -1,4 +1,4 @@
-package org.setu.bookshoptracker.main
+package org.setu.bookshoptracker.adapters
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
+import org.setu.bookshoptracker.main.Bookshop
+import org.setu.bookshoptracker.main.BookshopListener
 import timber.log.Timber
 
 class BookshopAdapter(

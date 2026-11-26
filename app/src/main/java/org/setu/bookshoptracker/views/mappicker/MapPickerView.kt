@@ -1,6 +1,7 @@
-package org.setu.bookshoptracker.main
+package org.setu.bookshoptracker.views.mappicker
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,9 @@ import org.osmdroid.views.overlay.Marker
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 
-class MapPickerActivity : AppCompatActivity() {
+class MapPickerView : AppCompatActivity() {
+
+    private lateinit var presenter: MapPickerPresenter
     private lateinit var map: MapView
     private var selectedPoint: GeoPoint? = null
     private var marker: Marker? = null
@@ -24,6 +27,8 @@ class MapPickerActivity : AppCompatActivity() {
 
         Configuration.getInstance().userAgentValue = packageName
         setContentView(R.layout.activity_map_picker)
+
+        presenter = MapPickerPresenter(this)
 
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)

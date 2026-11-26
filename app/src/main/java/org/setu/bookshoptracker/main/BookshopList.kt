@@ -1,10 +1,10 @@
 package org.setu.bookshoptracker.main
 
-import java.util.concurrent.atomic.AtomicLong
-import timber.log.Timber
-import java.io.File
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import timber.log.Timber
+import java.io.File
+import java.util.concurrent.atomic.AtomicLong
 
 class BookshopList(private val file: File? = null) {
 

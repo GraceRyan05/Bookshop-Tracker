@@ -1,4 +1,4 @@
-package org.setu.bookshoptracker.main
+package org.setu.bookshoptracker.views.allbooks
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,9 +14,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.ChipGroup
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
+import org.setu.bookshoptracker.adapters.BookAdapter
+import org.setu.bookshoptracker.main.ReadFilter
+import org.setu.bookshoptracker.views.bookshop.BookshopView
+import org.setu.bookshoptracker.views.bookshoplist.BookshopListView
+import org.setu.bookshoptracker.views.mainmenu.MainMenuView
+import org.setu.bookshoptracker.views.settings.SettingsView
 
-class AllBooksActivity : AppCompatActivity() {
+class AllBooksView : AppCompatActivity() {
 
+    private lateinit var presenter: AllBooksPresenter
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BookAdapter
     private lateinit var searchBookView: SearchView
@@ -26,6 +33,8 @@ class AllBooksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_all_books)
+
+        presenter = AllBooksPresenter(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -83,22 +92,22 @@ class AllBooksActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, MainMenuView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_bookshops -> {
-                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    startActivity(Intent(this, BookshopListView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_add -> {
-                    startActivity(Intent(this, AddEditActivity::class.java))
+                    startActivity(Intent(this, BookshopView::class.java))
                     true
                 }
                 R.id.nav_books -> true
                 R.id.nav_edit -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                    startActivity(Intent(this, SettingsView::class.java))
                     true
                 }
                 else -> false
@@ -112,7 +121,9 @@ class AllBooksActivity : AppCompatActivity() {
     }
 
     private fun refreshList() {
-        val query = if (::searchBookView.isInitialized) searchBookView.query.toString() else ""
-        adapter.updateBooks(AppData.books.findAllAndFilter(currentFilter, query))
+        if (::adapter.isInitialized) {
+            val query = if (::searchBookView.isInitialized) searchBookView.query.toString() else ""
+            adapter.updateBooks(AppData.books.findAllAndFilter(currentFilter, query))
+        }
     }
 }
