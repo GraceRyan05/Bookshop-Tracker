@@ -23,20 +23,30 @@ class BookList(private val file: File? = null) {
     private fun load() {
         if (file == null || !file.exists()) return
 
-        val type = object : TypeToken<List<Book>>() {}.type
+        try {
+            val content = file.readText()
+            if (content.isBlank()) return
 
-        val loaded: ArrayList<Book> = gson.fromJson(file.readText(), type) ?: arrayListOf()
+            val type = object : TypeToken<List<Book>>() {}.type
+            val loaded: ArrayList<Book> = gson.fromJson(content, type) ?: arrayListOf()
 
-        books.clear()
-        books.addAll(loaded)
+            books.clear()
+            books.addAll(loaded)
 
-        lastId.set(books.maxOfOrNull { it.id } ?: 0L)
+            lastId.set(books.maxOfOrNull { it.id } ?: 0L)
+        } catch (e: Exception) {
+            Timber.e("Error loading books JSON: ${e.message}")
+        }
     }
 
     private fun save() {
         if (file == null) return
-        file.parentFile?.mkdirs()
-        file.writeText(gson.toJson(books))
+        try {
+            file.parentFile?.mkdirs()
+            file.writeText(gson.toJson(books))
+        } catch (e: Exception) {
+            Timber.e("Error saving books JSON: ${e.message}")
+        }
     }
 
     fun findAllByBookshop(bookshopId: Long): List<Book> {

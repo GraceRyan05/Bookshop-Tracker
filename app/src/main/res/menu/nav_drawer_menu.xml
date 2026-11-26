@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Home" />
+        <item
+            android:id="@+id/drawer_bookshops"
+            android:icon="@drawable/collections_bookmark_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Bookshops" />
+        <item
+            android:id="@+id/drawer_map"
+            android:icon="@drawable/collections_bookmark_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Map Overview" />
+        <item
+            android:id="@+id/drawer_add"
+            android:icon="@drawable/library_add_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Add Bookshop" />
+        <item
+            android:id="@+id/drawer_books"
+            android:icon="@drawable/book_2_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Books Tracked" />
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/settings_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+            android:title="Settings" />
+    </group>
+</menu>

@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 import org.setu.bookshoptracker.views.allbooks.AllBooksView
@@ -24,7 +26,6 @@ class MainMenuView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Timber.plant(Timber.DebugTree())
         Timber.i("Bookshop Tracker MainMenuView started")
 
         enableEdgeToEdge()
@@ -37,6 +38,37 @@ class MainMenuView : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
+        }
+
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
+        val navigationView = findViewById<NavigationView>(R.id.navigationView)
+
+        navigationView.setNavigationItemSelectedListener { item ->
+            drawerLayout.closeDrawers()
+            when (item.itemId) {
+                R.id.drawer_home -> true
+                R.id.drawer_bookshops -> {
+                    startActivity(Intent(this, BookshopListView::class.java))
+                    true
+                }
+                R.id.drawer_map -> {
+                    startActivity(Intent(this, MapListView::class.java))
+                    true
+                }
+                R.id.drawer_add -> {
+                    startActivity(Intent(this, BookshopView::class.java))
+                    true
+                }
+                R.id.drawer_books -> {
+                    startActivity(Intent(this, AllBooksView::class.java))
+                    true
+                }
+                R.id.drawer_settings -> {
+                    startActivity(Intent(this, SettingsView::class.java))
+                    true
+                }
+                else -> false
+            }
         }
 
         val viewBookshopsButton = findViewById<Button>(R.id.viewBookshopsButton)
