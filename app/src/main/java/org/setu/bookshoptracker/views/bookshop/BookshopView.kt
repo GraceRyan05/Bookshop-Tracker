@@ -1,4 +1,4 @@
-package org.setu.bookshoptracker.main
+package org.setu.bookshoptracker.views.bookshop
 
 import android.content.Intent
 import android.net.Uri
@@ -17,26 +17,29 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
+import org.setu.bookshoptracker.main.Bookshop
+import org.setu.bookshoptracker.views.allbooks.AllBooksView
+import org.setu.bookshoptracker.views.bookshoplist.BookshopListView
+import org.setu.bookshoptracker.views.mainmenu.MainMenuView
+import org.setu.bookshoptracker.views.mappicker.MapPickerView
+import org.setu.bookshoptracker.views.settings.SettingsView
 import timber.log.Timber
 
-class AddEditActivity : AppCompatActivity() {
+class BookshopView : AppCompatActivity() {
 
+    private lateinit var presenter: BookshopPresenter
     private lateinit var nameInput: EditText
     private lateinit var addressInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var openingHoursInput: EditText
     private lateinit var ratingInput: EditText
-
     private lateinit var newBooksCheckbox: CheckBox
     private lateinit var usedBooksCheckbox: CheckBox
-
     private lateinit var bookshopImageView: ImageView
     private lateinit var selectImageButton: Button
-
     private var selectedImageUri: Uri? = null
     private var selectedLatitude: Double = 52.245954
     private var selectedLongitude: Double = -7.139539
-
     private var editingId: Long? = null
 
     private val imagePicker =
@@ -77,6 +80,8 @@ class AddEditActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_add_edit)
 
+        presenter = BookshopPresenter(this)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
@@ -99,7 +104,7 @@ class AddEditActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.buttonLoc).setOnClickListener {
-            val intent = Intent(this, MapPickerActivity::class.java)
+            val intent = Intent(this, MapPickerView::class.java)
             intent.putExtra("latitude", selectedLatitude)
             intent.putExtra("longitude", selectedLongitude)
             intent.putExtra("title", nameInput.text.toString().ifEmpty { "Bookshop Location" })
@@ -114,11 +119,11 @@ class AddEditActivity : AppCompatActivity() {
         val formTitle = findViewById<TextView>(R.id.formTitle)
         if (editingId != null) {
             formTitle.text = "Edit Bookshop"
-            Timber.i("AddEditActivity opened in Edit mode for shop id=$editingId")
+            Timber.i("BookshopView opened in Edit mode for shop id=$editingId")
             loadExistingBookshop(editingId!!)
         } else {
             formTitle.text = "Add Bookshop"
-            Timber.i("AddEditActivity opened in Add mode")
+            Timber.i("BookshopView opened in Add mode")
         }
 
         saveButton.setOnClickListener {
@@ -135,22 +140,22 @@ class AddEditActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, MainMenuView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_bookshops -> {
-                    startActivity(Intent(this, BookshopListActivity::class.java))
+                    startActivity(Intent(this, BookshopListView::class.java))
                     finish()
                     true
                 }
                 R.id.nav_add -> true
                 R.id.nav_books -> {
-                    startActivity(Intent(this, AllBooksActivity::class.java))
+                    startActivity(Intent(this, AllBooksView::class.java))
                     true
                 }
                 R.id.nav_edit -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                    startActivity(Intent(this, SettingsView::class.java))
                     true
                 }
                 else -> false
