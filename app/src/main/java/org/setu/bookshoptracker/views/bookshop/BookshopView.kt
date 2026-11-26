@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -32,7 +33,7 @@ class BookshopView : AppCompatActivity() {
     private lateinit var addressInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var openingHoursInput: EditText
-    private lateinit var ratingInput: EditText
+    private lateinit var ratingBar: RatingBar
     private lateinit var newBooksCheckbox: CheckBox
     private lateinit var usedBooksCheckbox: CheckBox
     private lateinit var bookshopImageView: ImageView
@@ -94,7 +95,7 @@ class BookshopView : AppCompatActivity() {
         newBooksCheckbox = findViewById(R.id.newBooksCheckbox)
         usedBooksCheckbox = findViewById(R.id.usedBooksCheckbox)
         openingHoursInput = findViewById(R.id.openingHoursInput)
-        ratingInput = findViewById(R.id.ratingInput)
+        ratingBar = findViewById(R.id.ratingBar)
 
         bookshopImageView = findViewById(R.id.bookshopImageView)
         selectImageButton = findViewById(R.id.selectImageButton)
@@ -181,7 +182,7 @@ class BookshopView : AppCompatActivity() {
         usedBooksCheckbox.isChecked = bookshop.sellsUsedBooks
 
         openingHoursInput.setText(bookshop.openingHours)
-        ratingInput.setText(bookshop.rating.toString())
+        ratingBar.rating = bookshop.rating.toFloat()
 
         selectedLatitude = bookshop.lat
         selectedLongitude = bookshop.lng
@@ -199,7 +200,7 @@ class BookshopView : AppCompatActivity() {
         val address = addressInput.text.toString().trim()
         val description = descriptionInput.text.toString().trim()
         val openingHours = openingHoursInput.text.toString().trim()
-        val rating = ratingInput.text.toString().toDoubleOrNull() ?: 0.0
+        val rating = ratingBar.rating.toDouble()
 
         try {
             if (editingId == null) {
@@ -216,7 +217,7 @@ class BookshopView : AppCompatActivity() {
                     lng = selectedLongitude
                 )
                 AppData.bookshops.create(bookshop)
-                Timber.i("Bookshop created: name=$name")
+                Timber.i("Bookshop created: name=$name, rating=$rating")
                 Toast.makeText(this, "Bookshop created", Toast.LENGTH_SHORT).show()
             } else {
                 val bookshop = Bookshop(
@@ -233,7 +234,7 @@ class BookshopView : AppCompatActivity() {
                     lng = selectedLongitude
                 )
                 AppData.bookshops.update(bookshop)
-                Timber.i("Bookshop updated: id=$editingId, name=$name")
+                Timber.i("Bookshop updated: id=$editingId, name=$name, rating=$rating")
                 Toast.makeText(this, "Bookshop updated", Toast.LENGTH_SHORT).show()
             }
 
