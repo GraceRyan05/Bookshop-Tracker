@@ -1,116 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.MainActivity">
+    tools:context=".views.mainmenu.MainMenuView">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp"
-            app:strokeColor="#E3E3E3"
-            app:strokeWidth="1dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="28dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:strokeColor="#E3E3E3"
+                app:strokeWidth="1dp">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:contentDescription="App Logo"
-                    android:src="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                    app:tint="@color/brand_green" />
-
-                <TextView
-                    android:id="@+id/mainTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:text="Bookshop Tracker"
-                    android:textColor="@color/brand_green"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="28dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:gravity="center"
-                    android:text="Discover, track &amp; log your bookshops"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:contentDescription="App Logo"
+                        android:src="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
+                        app:tint="@color/brand_green" />
 
-                <Button
-                    android:id="@+id/viewBookshopsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="View Bookshops"
-                    app:backgroundTint="@color/brand_green"
-                    app:cornerRadius="12dp" />
+                    <TextView
+                        android:id="@+id/mainTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:text="Bookshop Tracker"
+                        android:textColor="@color/brand_green"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/viewMapButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="View Map"
-                    app:backgroundTint="@color/brand_green"
-                    app:cornerRadius="12dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="Discover, track &amp; log your bookshops"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
 
-                <Button
-                    android:id="@+id/viewAllBooksButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="View All Books"
-                    app:backgroundTint="@color/brand_green"
-                    app:cornerRadius="12dp" />
+                    <Button
+                        android:id="@+id/viewBookshopsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="View Bookshops"
+                        app:backgroundTint="@color/brand_green"
+                        app:cornerRadius="12dp" />
 
-                <Button
-                    android:id="@+id/addBookshopButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Add Bookshop"
-                    app:backgroundTint="@color/brand_green"
-                    app:cornerRadius="12dp" />
+                    <Button
+                        android:id="@+id/viewMapButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="View Map"
+                        app:backgroundTint="@color/brand_green"
+                        app:cornerRadius="12dp" />
 
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/viewAllBooksButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="View All Books"
+                        app:backgroundTint="@color/brand_green"
+                        app:cornerRadius="12dp" />
 
-        </com.google.android.material.card.MaterialCardView>
+                    <Button
+                        android:id="@+id/addBookshopButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Add Bookshop"
+                        app:backgroundTint="@color/brand_green"
+                        app:cornerRadius="12dp" />
 
-    </LinearLayout>
+                </LinearLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@color/brand_green"
-        app:itemTextColor="@color/brand_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu" />
+            </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/brand_green"
+            app:itemTextColor="@color/brand_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_drawer_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
