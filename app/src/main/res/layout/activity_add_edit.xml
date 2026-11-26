@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.AddEditActivity">
+    tools:context=".views.bookshop.BookshopView">
 
     <ScrollView
         android:layout_width="0dp"
@@ -83,15 +83,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="Opening hours" />
+                        android:hint="Opening hours (e.g. 9am - 6pm)" />
 
-                    <EditText
-                        android:id="@+id/ratingInput"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Rating"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginTop="16dp"
+                        android:text="Shop Rating:"
+                        android:textColor="@color/brand_green"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:numStars="5"
+                        android:progressTint="@color/brand_green"
+                        android:stepSize="0.5" />
 
                     <ImageView
                         android:id="@+id/bookshopImageView"
