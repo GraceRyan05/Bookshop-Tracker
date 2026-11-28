@@ -42,8 +42,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:contentDescription="App Logo"
-                        android:src="@drawable/book_ribbon_24dp_e3e3e3_fill0_wght400_grad0_opsz24"
-                        app:tint="@color/brand_green" />
+                        android:src="@drawable/ic_main_book_logo" />
 
                     <TextView
                         android:id="@+id/mainTitle"
