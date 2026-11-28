@@ -131,14 +131,32 @@
                         android:scaleType="centerCrop"
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-                    <Button
-                        android:id="@+id/selectImageButton"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Select Image"
-                        app:backgroundTint="@color/brand_green"
-                        app:cornerRadius="12dp" />
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/selectImageButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Gallery"
+                            app:backgroundTint="@color/brand_green"
+                            app:cornerRadius="12dp" />
+
+                        <Button
+                            android:id="@+id/cameraPhotoButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="Take Photo"
+                            app:backgroundTint="@color/brand_green"
+                            app:cornerRadius="12dp" />
+
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/buttonLoc"

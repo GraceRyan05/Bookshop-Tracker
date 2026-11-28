@@ -1,6 +1,7 @@
 package org.setu.bookshoptracker.views.bookshop
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -27,6 +28,8 @@ import org.setu.bookshoptracker.views.mainmenu.MainMenuView
 import org.setu.bookshoptracker.views.mappicker.MapPickerView
 import org.setu.bookshoptracker.views.settings.SettingsView
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 
 class BookshopView : AppCompatActivity() {
 
@@ -40,6 +43,7 @@ class BookshopView : AppCompatActivity() {
     private lateinit var usedBooksCheckbox: CheckBox
     private lateinit var bookshopImageView: ImageView
     private lateinit var selectImageButton: Button
+    private lateinit var cameraPhotoButton: Button
     private lateinit var selectTimeButton: Button
     private var selectedImageUri: Uri? = null
     private var selectedLatitude: Double = 52.245954
@@ -60,6 +64,24 @@ class BookshopView : AppCompatActivity() {
                 selectedImageUri = uri
                 bookshopImageView.setImageURI(uri)
                 Timber.i("Image selected: $uri")
+            }
+        }
+
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+            if (bitmap != null) {
+                try {
+                    val file = File(cacheDir, "camera_photo_${System.currentTimeMillis()}.jpg")
+                    FileOutputStream(file).use { out ->
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+                    }
+                    val uri = Uri.fromFile(file)
+                    selectedImageUri = uri
+                    bookshopImageView.setImageURI(uri)
+                    Timber.i("Camera photo captured: $uri")
+                } catch (e: Exception) {
+                    Timber.e("Error saving camera photo: ${e.message}")
+                }
             }
         }
 
@@ -103,6 +125,7 @@ class BookshopView : AppCompatActivity() {
 
         bookshopImageView = findViewById(R.id.bookshopImageView)
         selectImageButton = findViewById(R.id.selectImageButton)
+        cameraPhotoButton = findViewById(R.id.cameraPhotoButton)
 
         selectTimeButton.setOnClickListener {
             showTimePicker()
@@ -110,6 +133,10 @@ class BookshopView : AppCompatActivity() {
 
         selectImageButton.setOnClickListener {
             imagePicker.launch(arrayOf("image/*"))
+        }
+
+        cameraPhotoButton.setOnClickListener {
+            cameraLauncher.launch(null)
         }
 
         findViewById<Button>(R.id.buttonLoc).setOnClickListener {
