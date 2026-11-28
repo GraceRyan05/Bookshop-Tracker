@@ -20,6 +20,7 @@
         <activity
             android:name=".views.mainmenu.MainMenuView"
             android:exported="true"
+            android:theme="@style/Theme.App.Starting"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
