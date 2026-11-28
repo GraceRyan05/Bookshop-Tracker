@@ -78,12 +78,30 @@
                         android:layout_height="wrap_content"
                         android:text="Sells used books" />
 
-                    <EditText
-                        android:id="@+id/openingHoursInput"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="Opening hours (e.g. 9am - 6pm)" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/openingHoursInput"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Opening hours (e.g. 09:00 - 18:00)" />
+
+                        <Button
+                            android:id="@+id/selectTimeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Pick Time"
+                            app:backgroundTint="@color/brand_green"
+                            app:cornerRadius="12dp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"

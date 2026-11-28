@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import org.setu.bookshoptracker.AppData
 import org.setu.bookshoptracker.R
 import org.setu.bookshoptracker.main.Bookshop
@@ -38,6 +40,7 @@ class BookshopView : AppCompatActivity() {
     private lateinit var usedBooksCheckbox: CheckBox
     private lateinit var bookshopImageView: ImageView
     private lateinit var selectImageButton: Button
+    private lateinit var selectTimeButton: Button
     private var selectedImageUri: Uri? = null
     private var selectedLatitude: Double = 52.245954
     private var selectedLongitude: Double = -7.139539
@@ -95,10 +98,15 @@ class BookshopView : AppCompatActivity() {
         newBooksCheckbox = findViewById(R.id.newBooksCheckbox)
         usedBooksCheckbox = findViewById(R.id.usedBooksCheckbox)
         openingHoursInput = findViewById(R.id.openingHoursInput)
+        selectTimeButton = findViewById(R.id.selectTimeButton)
         ratingBar = findViewById(R.id.ratingBar)
 
         bookshopImageView = findViewById(R.id.bookshopImageView)
         selectImageButton = findViewById(R.id.selectImageButton)
+
+        selectTimeButton.setOnClickListener {
+            showTimePicker()
+        }
 
         selectImageButton.setOnClickListener {
             imagePicker.launch(arrayOf("image/*"))
@@ -162,6 +170,35 @@ class BookshopView : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun showTimePicker() {
+        val openPicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(9)
+            .setMinute(0)
+            .setTitleText("Select Opening Time")
+            .build()
+
+        openPicker.addOnPositiveButtonClickListener {
+            val openHour = String.format("%02d:%02d", openPicker.hour, openPicker.minute)
+
+            val closePicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(18)
+                .setMinute(0)
+                .setTitleText("Select Closing Time")
+                .build()
+
+            closePicker.addOnPositiveButtonClickListener {
+                val closeHour = String.format("%02d:%02d", closePicker.hour, closePicker.minute)
+                openingHoursInput.setText("$openHour - $closeHour")
+            }
+
+            closePicker.show(supportFragmentManager, "CLOSE_TIME_PICKER")
+        }
+
+        openPicker.show(supportFragmentManager, "OPEN_TIME_PICKER")
     }
 
     private fun loadExistingBookshop(id: Long) {
